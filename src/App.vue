@@ -7,15 +7,14 @@
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { onMounted } from "vue";
-import { createApp, defineComponent, ref } from "vue";
+import { createApp, defineComponent, ref, nextTick } from "vue";
 import MyPopup from "@/components/MyPopup.vue";
 
 export default {
   setup() {
     const title = ref("Unchanged Popup Title");
     onMounted(() => {
-      mapboxgl.accessToken =
-        "yourAccessToken";
+      mapboxgl.accessToken = "yourAccessToken";
       const map = new mapboxgl.Map({
         container: "map",
         style: "mapbox://styles/mapbox/light-v9",
@@ -48,7 +47,9 @@ export default {
               return { title };
             },
           });
-          createApp(MyNewPopup).mount("#popup-content");
+          nextTick(() => {
+            createApp(MyNewPopup).mount("#popup-content");
+          });
         });
       });
     });
